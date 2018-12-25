@@ -1,0 +1,24 @@
+随手笔记 2018-12-25
+
+1.分享两个网站
+yaml<=>prop
+http://www.toyaml.com/index.html
+yaml_validation
+http://www.bejson.com/validators/yaml_editor/
+2.SpringBoot之定制启动图案banner.txt
+(1)在resoures下新建banner.txt文件
+(2)http://www.network-science.de/ascii/
+打开网址
+Text输入定制字符(英文)
+Font选择_all fonts with your text_
+点击do it!
+耐心等待ASCII字符生成
+挑选复制自己中意的(推荐starwars字体,看的清楚)
+复制进banner.txt
+把排版排好
+启动SpringBoot就能看见自己定制的图案了
+3.git提交代码之良好习惯
+早上来先拉取代码,然后再编写自己的代码
+晚上走先拉取代码,然后再提交
+如果任务没完成,未完成部分注释,只提交完成的代码
+如果代码冲突需要合并,找人商量合并是否会影响他的代码
