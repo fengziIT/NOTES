@@ -1,0 +1,20 @@
+随手笔记 2018-12-24
+
+SpringBoot之测试用例:
+1.类上加注解
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@Transactional//用于事务回滚
+2.方法上加@Test
+3.模拟传入测试方法所需参数
+4.Assert.assertTrue(Objects.equals(ret,1));
+或者Assert.assertTrue(Objects.equals(selectObj.getName(),paramObj.getName()));
+或者Assert.assertTrue(list.get(0)!=null);
+或者Assert.assertTrue(ret!=0);
+5.测试运行又分为方法测试,类测试和项目测试(Run 'All Tests')，先跑方法测试，然后类测试，最后整个项目Test测试
+
+SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//将字符串转换为date对象
+Date date = sdf.parse("2018-11-23");
+//将date对象转换为字符串
+String date = sdf.format(new Date());
