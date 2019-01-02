@@ -1,1 +1,101 @@
+随手笔记 2019-01-02
 
+Spring之资源获取
+
+jdk为我们提供了IO流,为什么Spring又进一步封装呢?
+因为jdk虽然提供了IO流,但是对于项目类路径的资源读取并不方便,
+Spring提供了一个Resource接口，
+此接口实现类可以访问操作系统资源,URL资源,类路径资源等等,
+将访问到的资源通过调用resource.getInputStream()得到文件的输入流。
+
+
+以下是返回Resource的几种方法:
+
+1.通过Resource接口获取资源
+
+Resource接口的实现类有:
+ClassPathResource	通过类路径获取资源文件
+FileSystemResource	通过文件系统获取资源
+UrlResource	通过URL地址获取资源
+ByteArrayResource	获取字节数组封装的资源
+ServletContextResource	获取ServletContext环境下的资源
+InputStreamResource	获取输入流封装的资源
+
+//new ClassPathResource("mapper/TtypeMapper.xml");
+//new UrlResource("http://www.baidu.com");	
+//new FileSystemResource("D:\\BugReport.txt");
+//new ByteArrayResource("字符串转换成字节数组".getBytes("UTF-8"));
+//new InputStreamResource(new FileInputStream(new File("D:\\\\BugReport.txt")));
+
+public class ResourceTest {
+	public static void main(String[] args) throws Exception {
+		//new ClassPathResource("mapper/TtypeMapper.xml");
+		//new UrlResource("http://www.baidu.com");
+		//new FileSystemResource("D:\\BugReport.txt");
+		//new ByteArrayResource("字符串转换成字节数组".getBytes("UTF-8"));
+		//new InputStreamResource(new FileInputStream(new File("D:\\\\BugReport.txt")));
+
+		Resource resource = new ClassPathResource("mapper/TtypeMapper.xml");
+		InputStream inputStream = null;
+
+		try {
+			inputStream = resource.getInputStream();
+			List<String> readLines = IOUtils.readLines(inputStream, "UTF-8");
+			for (String string : readLines) {
+				System.out.println(string);
+			}
+		} catch (IOException e) {
+			System.out.println("资源获取失败");
+		}	
+	}
+}
+
+2.通过ResourceLoader接口获取资源
+
+//"classpath:path"表示返回ClasspathResource资源
+//"http://path"和"file:path"表示返回UrlResource资源
+//DefaultResourceLoader默认实现是加载classpath资源
+ResourceLoader loader = new DefaultResourceLoader();
+Resource resource = loader.getResource("");
+
+3.通过ApplicationContext获取资源
+
+applicationContext.getResource("file:D:\\BugReport.txt");
+
+4.将resource注入到bean中的方式获取资源
+public class MyResource {
+    private Resource resource;
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
+    public void resource() throws IOException {
+        System.out.println(resource.getFilename());
+        System.out.println(resource.contentLength());
+    }
+
+}
+
+spring-resource.xml:
+<bean id="myResource" class="com.spring.test.MyResource">
+        <property name="resource">
+            <value>classpath:test.txt</value>
+        </property>
+ </bean>
+
+public class App {
+    public static void main(String[] args) {
+        @SuppressWarnings("resource")
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring-resource.xml");  
+        MyResource myResource = (MyResource) context.getBean("myResource");
+        try {
+            myResource.resource();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
+
+---摘自  詹姆斯哈登CSDN博客
